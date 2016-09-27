@@ -24,7 +24,7 @@ PLATFORMS=$1
 UNITY="$2/Unity.app/Contents/MacOS/Unity"
 SDK_URL=$3
 
-PROJECT_PATH="$(pwd)/UnityAdsAssetStoreTest"
+PROJECT_PATH="$(pwd)/UnityAdsEngineIntegrationTest"
 EDITOR_LOG_MSG="Please check ~/Library/Logs/Unity/Editor.log"
 
 if [ ! -f "$UNITY" ]; then
@@ -59,7 +59,7 @@ fi
 
 if [[ $PLATFORMS =~ .*android.* ]]; then
     echo Building project for Android...
-    APK_PATH="UnityAdsAssetStoreTest/Builds/Android.apk"
+    APK_PATH="UnityAdsEngineIntegrationTest/Builds/Android.apk"
     if [ -f "$APK_PATH" ]; then
         rm "$APK_PATH"
     fi
@@ -77,12 +77,12 @@ if [[ $PLATFORMS =~ .*android.* ]]; then
     # TODO: Deploy to device
     # echo Installing on Android device...
     # adb install -r Builds/Android.apk
-    # adb shell am start -S -a android.intent.action.MAIN -n com.unity3d.UnityAdsAssetStoreTest/com.unity3d.player.UnityPlayerActivity
+    # adb shell am start -S -a android.intent.action.MAIN -n com.unity3d.UnityAdsEngineIntegrationTest/com.unity3d.player.UnityPlayerActivity
 fi
 
 if [[ $PLATFORMS =~ .*ios.* ]]; then
     echo Building project for iOS...
-    IOS_PATH="UnityAdsAssetStoreTest/Builds/iOS"
+    IOS_PATH="UnityAdsEngineIntegrationTest/Builds/iOS"
     if [ -d "$IOS_PATH" ]; then
         rm -rf "$IOS_PATH"
     fi
