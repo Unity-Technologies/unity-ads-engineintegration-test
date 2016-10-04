@@ -35,7 +35,7 @@ if [[ $PLATFORMS =~ .*android.* ]]; then
     if [ -f "$APK_PATH" ]; then
         rm "$APK_PATH"
     fi
-    "$UNITY" -projectPath "$PROJECT_PATH" -executeMethod AutoBuilder.PerformAndroidBuild -batchMode -quit
+    "$UNITY" -projectPath "$PROJECT_PATH" -executeMethod AutoBuilder.PerformAndroidBuild -skipMissingUPID -batchMode -quit
     rc=$?; if [[ $rc != 0 ]]; then
         echo "Unity build for Android failed. $EDITOR_LOG_MSG"
         exit $rc
@@ -48,8 +48,8 @@ if [[ $PLATFORMS =~ .*android.* ]]; then
 
     # TODO: Deploy to device
     # echo Installing on Android device...
-    # adb install -r Builds/Android.apk
-    # adb shell am start -S -a android.intent.action.MAIN -n com.unity3d.UnityAdsEngineIntegrationTest/com.unity3d.player.UnityPlayerActivity
+    # adb install -r "$APK_PATH"
+    # adb shell am start -S -a android.intent.action.MAIN -n com.unity3d.unityads.EngineTest/com.unity3d.player.UnityPlayerActivity
 fi
 
 if [[ $PLATFORMS =~ .*ios.* ]]; then
@@ -58,7 +58,7 @@ if [[ $PLATFORMS =~ .*ios.* ]]; then
     if [ -d "$IOS_PATH" ]; then
         rm -rf "$IOS_PATH"
     fi
-    "$UNITY" -projectPath "$PROJECT_PATH" -executeMethod AutoBuilder.PerformiOSBuild -batchMode -quit
+    "$UNITY" -projectPath "$PROJECT_PATH" -executeMethod AutoBuilder.PerformiOSBuild -skipMissingUPID -batchMode -quit
     rc=$?; if [[ $rc != 0 ]]; then
         echo "Unity build for iOS failed. $EDITOR_LOG_MSG"
         exit $rc
@@ -71,6 +71,6 @@ if [[ $PLATFORMS =~ .*ios.* ]]; then
     fi
 
     # TODO: Deploy to device
-    # open Builds/iOS/Unity-iPhone.xcodeproj
-    # xcodebuild -project Builds/iOS/Unity-iPhone.xcodeproj
+    # open $IOS_PATH/Unity-iPhone.xcodeproj
+    # xcodebuild -project $IOS_PATH/Unity-iPhone.xcodeproj
 fi
