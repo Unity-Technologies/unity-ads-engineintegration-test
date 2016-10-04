@@ -37,9 +37,7 @@ public class UIController : MonoBehaviour
 #if !UNITY_ADS
 		Log ("Ads not enabled for this platform. Enable from Services window and make sure you have selected either Android or iOS");
 		UpdateUI ();
-		InitializeButton.interactable = false;
 		ShowCoroutineAdButton.interactable = false;
-		TestModeToggle.interactable = false;
 		DebugModeToggle.interactable = false;
 #else
 		Log (string.Format ("Unity version: {0}", Application.unityVersion));

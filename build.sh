@@ -8,21 +8,18 @@
 if [ -z "$2" ]; then
     echo "Build Unity Ads SDK example project on OS X"
     echo
-    echo "./build.sh platform(s) unity-path [Ads SDK url]"
+    echo "./build.sh platform(s) unity-path"
     echo
     echo "Examples:"
-    echo "  ./build.sh android \"/Applications/Unity 5.4.0f3\""
-    echo "  ./build.sh android,ios \"/Applications/Unity 5.4.0f3\" http://cdn.unityads.unity3d.com/unitypackage/2.0.2/UnityAds.unitypackage"
+    echo "  ./build.sh android,ios \"/Applications/Unity 5.4.0f3\""
     echo
     echo "Unity version e.g. \"5.4.0f3\" must be installed on the machine in specified folder"
-    echo "If specifying SDK url, this will be downloaded and imported into the project before building"
     exit 1
 fi
 
 # parameters
 PLATFORMS=$1
 UNITY="$2/Unity.app/Contents/MacOS/Unity"
-SDK_URL=$3
 
 PROJECT_PATH="$(pwd)/UnityAdsEngineIntegrationTest"
 EDITOR_LOG_MSG="Please check ~/Library/Logs/Unity/Editor.log"
@@ -30,31 +27,6 @@ EDITOR_LOG_MSG="Please check ~/Library/Logs/Unity/Editor.log"
 if [ ! -f "$UNITY" ]; then
     echo "Could not find Unity executable in '$UNITY'. Please verify it's installed and available in that location"
     exit 1
-fi
-
-if [ ! -z "$SDK_URL" ]; then
-    echo Downloading Ads SDK from $SDK_URL...
-    curl -s -o UnityAds.unitypackage $SDK_URL
-    rc=$?; if [[ $rc != 0 ]]; then
-        echo "Failed to download package"
-        exit $rc
-    fi
-
-    # Import package into project
-    echo "Importing Ads SDK plugin..."
-    "$UNITY" -projectPath "$PROJECT_PATH" -importPackage "$(pwd)/UnityAds.unitypackage" -batchMode -quit
-    rc=$?; if [[ $rc != 0 ]]; then
-        echo "Importing package failed. $EDITOR_LOG_MSG"
-        exit $rc
-    fi
-
-    # UNITY_ADS define is used to be able to import plugin from command line without compile erros in project
-    echo "Setting UNITY_ADS define..."
-    "$UNITY" -projectPath "$PROJECT_PATH" -executeMethod AutoBuilder.EnableAds -batchMode -quit
-    rc=$?; if [[ $rc != 0 ]]; then
-        echo "Defining UNITY_ADS failed. $EDITOR_LOG_MSG"
-        exit $rc
-    fi
 fi
 
 if [[ $PLATFORMS =~ .*android.* ]]; then
